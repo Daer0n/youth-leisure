@@ -1,8 +1,10 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Table, Column, Integer, String, MetaData, Boolean, ForeignKey
 
-from database import Base
-from auth.models import Teacher
+from src.database import Base
+from src.auth.models import Teacher
+
+metadata = MetaData()
 
 class Circle(Base):
     __tablename__ = 'Circle'

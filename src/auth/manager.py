@@ -3,10 +3,10 @@ from typing import Optional
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
 
-from auth.models import Teacher
-from auth.utils import get_user_db
+from src.auth.models import Teacher
+from src.auth.utils import get_user_db
 
-from config import SECRET_AUTH
+from src.config import SECRET_AUTH
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[Teacher, int]):

@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import get_async_session
-from operations.models import Children
-from operations.schemas import ChildrenCreate
+from src.database import get_async_session
+from src.operations.models import Children
+from src.operations.schemas import ChildrenCreate
 
 
 router = APIRouter(

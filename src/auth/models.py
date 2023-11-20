@@ -1,8 +1,9 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Table, Column, Integer, String, MetaData, Boolean
 
-from database import Base
+from src.database import Base
 
+metadata = MetaData()
 
 class Teacher(SQLAlchemyBaseUserTable[int], Base):
     id = Column(Integer, primary_key=True)

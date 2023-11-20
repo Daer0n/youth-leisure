@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 
-from auth.base_config import auth_backend, fastapi_users
-from auth.schemas import TeacherRead, TeacherCreate
+from src.auth.base_config import auth_backend, fastapi_users
+from src.auth.schemas import TeacherRead, TeacherCreate
 
-from operations.router import router as router_operation
+from src.operations.router import router as router_operation
 
 app = FastAPI(
     title="Trading App"
