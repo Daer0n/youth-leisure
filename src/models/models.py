@@ -1,10 +1,22 @@
-from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import Table, Column, Integer, String, MetaData, Boolean, ForeignKey
 
-from src.database import Base
-from src.auth.models import Teacher
+from sqlalchemy import Column, Integer, String, ForeignKey
 
-metadata = MetaData()
+from database.database import Base
+
+
+class Teacher(Base):
+    __tablename__ = 'Teacher'
+
+    id = Column(Integer, primary_key=True)
+    full_name = Column(String, nullable=False)
+    gender = Column(String, nullable=False)
+    passport = Column(String, nullable=False)
+    birthday = Column(String, nullable=False)
+    family_status = Column(String, nullable=False)
+    education = Column(String, nullable=False)
+    specialization = Column(String, nullable=False)
+    adress = Column(String, nullable=False)
+
 
 class Circle(Base):
     __tablename__ = 'Circle'
