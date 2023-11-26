@@ -50,14 +50,9 @@ const PartyComponent = () => {
 
     return (
         <div>
-            <nav className="navbar navbar-dark bg-primary">
-                <div className="container-fluid">
-                    <a className="navbar-brand" href="#">
-                        Youth leisure
-                    </a>
-                </div>
-            </nav>
-
+            <div className="text-center">
+                <div className="display-4">Groups</div>
+            </div>
             <div className="container">
                 <form onSubmit={handleFormSubmit}>
                     <div className="mb-3 mt-3">

@@ -62,14 +62,9 @@ const ChildrenComponent = () => {
 
     return (
         <div>
-            <nav className="navbar navbar-dark bg-primary">
-                <div className="container-fluid">
-                    <a className="navbar-brand" href="#">
-                        Youth leisure
-                    </a>
-                </div>
-            </nav>
-
+            <div className="text-center">
+                <div className="display-4">Childrens</div>
+            </div>
             <div className="container">
                 <form onSubmit={handleFormSubmit}>
                     <div className="mb-3 mt-3">
@@ -143,7 +138,10 @@ const ChildrenComponent = () => {
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="birthday_certificate_information" className="form-label">
+                        <label
+                            htmlFor="birthday_certificate_information"
+                            className="form-label"
+                        >
                             Birthday certificate information
                         </label>
                         <input
@@ -185,7 +183,10 @@ const ChildrenComponent = () => {
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="parents_information" className="form-label">
+                        <label
+                            htmlFor="parents_information"
+                            className="form-label"
+                        >
                             Parents information
                         </label>
                         <input
@@ -238,14 +239,18 @@ const ChildrenComponent = () => {
                                 <td>{children.age}</td>
                                 <td>{children.school_number}</td>
                                 <td>{children.grade}</td>
-                                <td>{children.birthday_certificate_information}</td>
+                                <td>
+                                    {children.birthday_certificate_information}
+                                </td>
                                 <td>{children.address}</td>
                                 <td>{children.home_phone}</td>
                                 <td>{children.parents_information}</td>
                                 <td>{children.group_id}</td>
                                 <td>
                                     <button
-                                        onClick={() => handleDelete(children.id)}
+                                        onClick={() =>
+                                            handleDelete(children.id)
+                                        }
                                     >
                                         <FontAwesomeIcon icon={faTimes} />
                                     </button>

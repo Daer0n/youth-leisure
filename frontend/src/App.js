@@ -1,21 +1,53 @@
-import React, { useState, useEffect } from "react";
-import api from "./api";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
 
 import TeacherComponent from "./components/TeacherComponent";
 import ChildrenComponent from "./components/ChildrenComponent";
 import PartyComponent from "./components/PartyComponent";
 
 const App = () => {
+    const [selectedComponent, setSelectedComponent] = useState(null);
+
+    const handleLinkClick = (component) => {
+        setSelectedComponent(component);
+    };
+
     return (
-        <div>
-            <TeacherComponent />
+        <div className="h-100 d-flex flex-column">
+            <nav className="navbar navbar-expand w-100 navbar-dark bg-primary">
+                <a className="navbar-brand text-center w-100" href="#">
+                    <span className="logo-text">Youth leisure</span>
+                </a>
+            </nav>
 
-            <ChildrenComponent />
+            <div className="row flex-grow-1">
+                <div className="col-3 bg-secondary p-3 d-flex flex-column">
+                    <button
+                        className="btn btn-primary mb-3"
+                        onClick={() => handleLinkClick("teacher")}
+                    >
+                        Teachers
+                    </button>
+                    <button
+                        className="btn btn-primary mb-3"
+                        onClick={() => handleLinkClick("children")}
+                    >
+                        Childrens
+                    </button>
+                    <button
+                        className="btn btn-primary mb-3"
+                        onClick={() => handleLinkClick("party")}
+                    >
+                        Groups
+                    </button>
+                    <div className="mt-auto"></div>
+                </div>
 
-            <PartyComponent />
+                <div className="col-9 p-3">
+                    {selectedComponent === "teacher" && <TeacherComponent />}
+                    {selectedComponent === "children" && <ChildrenComponent />}
+                    {selectedComponent === "party" && <PartyComponent />}
+                </div>
+            </div>
         </div>
     );
 };
