@@ -4,6 +4,8 @@ import TeacherComponent from "./components/TeacherComponent";
 import ChildrenComponent from "./components/ChildrenComponent";
 import PartyComponent from "./components/PartyComponent";
 
+import "./App.css";
+
 const App = () => {
     const [selectedComponent, setSelectedComponent] = useState(null);
 
@@ -12,7 +14,7 @@ const App = () => {
     };
 
     return (
-        <div className="h-100 d-flex flex-column">
+        <div className="mainPage">
             <nav className="navbar navbar-expand w-100 navbar-dark bg-primary">
                 <a className="navbar-brand text-center w-100" href="#">
                     <span className="logo-text">Youth leisure</span>
@@ -20,7 +22,7 @@ const App = () => {
             </nav>
 
             <div className="row flex-grow-1">
-                <div className="col-3 bg-secondary p-3 d-flex flex-column">
+                <div className="col-3 bg-secondary p-3 d-flex flex-column sidebar">
                     <button
                         className="btn btn-primary mb-3"
                         onClick={() => handleLinkClick("teacher")}
@@ -42,7 +44,7 @@ const App = () => {
                     <div className="mt-auto"></div>
                 </div>
 
-                <div className="col-9 p-3">
+                <div className="col-9 p-0">
                     {selectedComponent === "teacher" && <TeacherComponent />}
                     {selectedComponent === "children" && <ChildrenComponent />}
                     {selectedComponent === "party" && <PartyComponent />}
