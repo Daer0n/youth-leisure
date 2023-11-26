@@ -12,14 +12,14 @@ router = APIRouter(
     tags=["Operation"]
 )
 
-@router.post("/children")
+@router.post("/children/")
 async def add_children(new_children: ChildrenCreate, session: AsyncSession = Depends(get_async_session)):
     stmt = insert(Children).values(**new_children.dict())
     await session.execute(stmt)
     await session.commit()
     return {"status": "success"}
 
-@router.delete("/children")
+@router.delete("/children/{children_id}/")
 async def delete_children(children_id: int, session: AsyncSession = Depends(get_async_session)):
     stmt = delete(Children).where(Children.id == children_id)
     result = await session.execute(stmt)
@@ -29,7 +29,7 @@ async def delete_children(children_id: int, session: AsyncSession = Depends(get_
     await session.commit()
     return {'ok': True}
 
-@router.get("/children")
+@router.get("/children/")
 async def get_all_children(session: AsyncSession = Depends(get_async_session)):
     childrens = await session.execute(select(
         Children.id, 
@@ -72,7 +72,7 @@ async def get_all_children(session: AsyncSession = Depends(get_async_session)):
 
     return childrens_list
 
-@router.patch("/children")
+@router.patch("/children/")
 async def change_children(update_children: ChildrenCreate, session: AsyncSession = Depends(get_async_session)):
     children = await session.execute(select(Children).filter(Children.id == update_children.id))
     children = children.scalar_one_or_none()
@@ -95,14 +95,14 @@ async def change_children(update_children: ChildrenCreate, session: AsyncSession
 
 
 
-@router.post("/teacher")
+@router.post("/teacher/")
 async def add_teacher(new_teacher: TeacherCreate, session: AsyncSession = Depends(get_async_session)):
     stmt = insert(Teacher).values(**new_teacher.dict())
     await session.execute(stmt)
     await session.commit()
     return {"status": "success"}
 
-@router.delete("/teacher")
+@router.delete("/teacher/{teacher_id}/")
 async def delete_teacher(teacher_id: int, session: AsyncSession = Depends(get_async_session)):
     stmt = delete(Teacher).where(Teacher.id == teacher_id)
     result = await session.execute(stmt)
@@ -113,7 +113,7 @@ async def delete_teacher(teacher_id: int, session: AsyncSession = Depends(get_as
     return {'ok': True}
 
 
-@router.get("/teacher")
+@router.get("/teacher/")
 async def get_all_teacher(session: AsyncSession = Depends(get_async_session)):
     teachers = await session.execute(select(
         Teacher.id, 
@@ -153,7 +153,7 @@ async def get_all_teacher(session: AsyncSession = Depends(get_async_session)):
 
     return teachers_list
 
-@router.patch("/teacher")
+@router.patch("/teacher/")
 async def change_teacher(update_teacher: TeacherCreate, session: AsyncSession = Depends(get_async_session)):
     teacher = await session.execute(select(Teacher).filter(Teacher.id == update_teacher.id))
     teacher = teacher.scalar_one_or_none()
@@ -174,14 +174,14 @@ async def change_teacher(update_teacher: TeacherCreate, session: AsyncSession = 
 
 
 
-@router.post("/party")
+@router.post("/party/")
 async def add_party(new_party: PartyCreate, session: AsyncSession = Depends(get_async_session)):
     stmt = insert(Party).values(**new_party.dict())
     await session.execute(stmt)
     await session.commit()
     return {"status": "success"}
 
-@router.delete("/party")
+@router.delete("/party/{party_id}/")
 async def delete_party(party_id: int, session: AsyncSession = Depends(get_async_session)):
     stmt = delete(Party).where(Party.id == party_id)
     result = await session.execute(stmt)
@@ -191,7 +191,7 @@ async def delete_party(party_id: int, session: AsyncSession = Depends(get_async_
     await session.commit()
     return {'ok': True}
 
-@router.get("/party")
+@router.get("/party/")
 async def get_all_party(session: AsyncSession = Depends(get_async_session)):
     party = await session.execute(select(
         Party.id, 
@@ -216,7 +216,7 @@ async def get_all_party(session: AsyncSession = Depends(get_async_session)):
 
     return party_list
 
-@router.patch("/party")
+@router.patch("/party/")
 async def change_party(update_party: PartyCreate, session: AsyncSession = Depends(get_async_session)):
     party = await session.execute(select(Party).filter(Party.id == update_party.id))
     party = party.scalar_one_or_none()
