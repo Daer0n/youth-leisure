@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const PartyComponent = () => {
-    const [partys, setPartya] = useState([]);
+    const [partys, setPartys] = useState([]);
     const [formData, setFormData] = useState({
         id: "",
         group_name: "",
@@ -15,7 +15,7 @@ const PartyComponent = () => {
 
     const fetchPartys = async () => {
         const responce = await api.get("operations/party/");
-        setPartya(responce.data);
+        setPartys(responce.data);
     };
 
     useEffect(() => {
