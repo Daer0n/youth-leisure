@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import api from "../api";
+import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import PartyForm from "./PartyInformationComponent.js";
 
 const PartyComponent = () => {
     const [partys, setPartys] = useState([]);
@@ -12,6 +13,8 @@ const PartyComponent = () => {
         group_number: "",
         circle_id: "",
     });
+    const [showPartyForm, setShowPartyForm] = useState(false);
+    const [selectedParty, setSelectedParty] = useState(null);
 
     const fetchPartys = async () => {
         const responce = await api.get("operations/party/");
@@ -46,6 +49,17 @@ const PartyComponent = () => {
     const handleDelete = async (id) => {
         await api.delete(`operations/party/${id}/`);
         await fetchPartys();
+    };
+
+    const handlePartyInformation = async (id) => {
+        const response = await api.get(`operations/party/${id}/children/`);
+        setSelectedParty(response.data);
+        setShowPartyForm(true);
+    };
+
+    const handleClosePartyForm = () => {
+        setShowPartyForm(false);
+        setSelectedParty(null);
     };
 
     return (
@@ -127,7 +141,16 @@ const PartyComponent = () => {
                         {partys.map((party) => (
                             <tr key={party.id}>
                                 <td>{party.id}</td>
-                                <td>{party.group_name}</td>
+                                <td>
+                                    <div
+                                        className="link"
+                                        onClick={() =>
+                                            handlePartyInformation(party.id)
+                                        }
+                                    >
+                                        {party.group_name}
+                                    </div>
+                                </td>
                                 <td>{party.group_number}</td>
                                 <td>{party.circle_id}</td>
                                 <td>
@@ -142,6 +165,12 @@ const PartyComponent = () => {
                     </tbody>
                 </table>
             </div>
+            {showPartyForm && selectedParty && (
+                <PartyForm
+                    party={selectedParty}
+                    onClose={handleClosePartyForm}
+                />
+            )}
         </div>
     );
 };

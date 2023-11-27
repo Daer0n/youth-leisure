@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import api from "../api";
+import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
+import ChildForm from "./ChildrenInformationComponent";
 
 const ChildrenComponent = () => {
     const [childrens, setChildren] = useState([]);
@@ -18,10 +20,12 @@ const ChildrenComponent = () => {
         parents_information: "",
         group_id: "",
     });
+    const [showChildForm, setShowChildForm] = useState(false);
+    const [selectedChild, setSelectedChild] = useState(null);
 
     const fetchChildrens = async () => {
-        const responce = await api.get("operations/children/");
-        setChildren(responce.data);
+        const response = await api.get("operations/children/");
+        setChildren(response.data);
     };
 
     useEffect(() => {
@@ -58,6 +62,17 @@ const ChildrenComponent = () => {
     const handleDelete = async (id) => {
         await api.delete(`operations/children/${id}/`);
         await fetchChildrens();
+    };
+
+    const handleChildrenInformation = async (id) => {
+        const response = await api.get(`operations/children/${id}`);
+        setSelectedChild(response.data);
+        setShowChildForm(true);
+    };
+
+    const handleCloseChildForm = () => {
+        setShowChildForm(false);
+        setSelectedChild(null);
     };
 
     return (
@@ -235,7 +250,18 @@ const ChildrenComponent = () => {
                         {childrens.map((children) => (
                             <tr key={children.id}>
                                 <td>{children.id}</td>
-                                <td>{children.full_name}</td>
+                                <td>
+                                    <div
+                                        className="link"
+                                        onClick={() =>
+                                            handleChildrenInformation(
+                                                children.id
+                                            )
+                                        }
+                                    >
+                                        {children.full_name}
+                                    </div>
+                                </td>
                                 <td>{children.age}</td>
                                 <td>{children.school_number}</td>
                                 <td>{children.grade}</td>
@@ -260,6 +286,12 @@ const ChildrenComponent = () => {
                     </tbody>
                 </table>
             </div>
+            {showChildForm && selectedChild && (
+                <ChildForm
+                    child={selectedChild}
+                    onClose={handleCloseChildForm}
+                />
+            )}
         </div>
     );
 };
