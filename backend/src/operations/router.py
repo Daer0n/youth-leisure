@@ -5,7 +5,7 @@ from sqlalchemy.orm import joinedload
 
 from database.database import get_async_session
 from models.models import Children, Teacher, Party, Circle
-from schemas.schemas import ChildrenCreate, ChildrenRead, TeacherCreate, PartyCreate
+from schemas.schemas import ChildrenCreate, ChildrenRead, TeacherCreate, PartyCreate, CircleCreate
 
 router = APIRouter(
     prefix="/operations",
@@ -230,7 +230,7 @@ async def change_party(update_party: PartyCreate, session: AsyncSession = Depend
     return party
 
 
-@router.get("/group/{group_id}/children")
+@router.get("/party/{group_id}/children/")
 async def get_group_children(group_id: int, session: AsyncSession = Depends(get_async_session)):
     query = (
         select(Circle.circle_name, Party.group_name, Children.full_name, Children.age)
@@ -245,16 +245,16 @@ async def get_group_children(group_id: int, session: AsyncSession = Depends(get_
     children_list = []
     for circle_name, group_name, child_name, age in children:
         child_info = {
-            "circle_name": circle_name,
             "group_name": group_name,
-            "child_name": child_name,
-            "child_age": age
+            "circle_name": circle_name,
+            "children_name": child_name,
+            "children_age": age
         }
         children_list.append(child_info)
 
     return children_list
 
-@router.get("/circles")
+@router.get("/circles/")
 async def get_circles(session: AsyncSession = Depends(get_async_session)):
     query = (
         select(Circle.circle_name, Teacher.full_name)
@@ -272,13 +272,13 @@ async def get_circles(session: AsyncSession = Depends(get_async_session)):
 
     return circles_list
 
-@router.get("/child/{child_id}")
-async def get_child_data(child_id: int, session: AsyncSession = Depends(get_async_session)):
+@router.get("/children/{children_id}/")
+async def get_child_data(children_id: int, session: AsyncSession = Depends(get_async_session)):
     query = (
         select(Children.full_name, Children.age, Circle.circle_name, Party.group_name)
         .join(Party, Children.group_id == Party.id)
         .join(Circle, Party.circle_id == Circle.id)
-        .where(Children.id == child_id)
+        .where(Children.id == children_id)
     )
     result = await session.execute(query)
     child_data = result.first()
@@ -292,3 +292,62 @@ async def get_child_data(child_id: int, session: AsyncSession = Depends(get_asyn
     }
 
     return child_info
+
+@router.post("/circle/")
+async def add_circle(new_circle: CircleCreate, session: AsyncSession = Depends(get_async_session)):
+    stmt = insert(Circle).values(**new_circle.dict())
+    await session.execute(stmt)
+    await session.commit()
+    return {"status": "success"}
+
+@router.delete("/circle/{circle_id}/")
+async def delete_circle(circle_id: int, session: AsyncSession = Depends(get_async_session)):
+    stmt = delete(Circle).where(Circle.id == circle_id)
+    result = await session.execute(stmt)
+    deleted_count = result.rowcount
+    if deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Circle not found")
+    await session.commit()
+    return {'ok': True}
+
+@router.get("/circle/")
+async def get_all_circle(session: AsyncSession = Depends(get_async_session)):
+    circle = await session.execute(select(
+        Circle.id, 
+        Circle.circle_number, 
+        Circle.circle_name, 
+        Circle.specialization,
+        Circle.teacher_id
+    ))
+    circle_list = []
+    for (
+        id, 
+        circle_number, 
+        circle_name, 
+        specialization,
+        teacher_id
+    ) in circle:
+        circle_info = {
+            "id": id,
+            "circle_number": circle_number,
+            "circle_name": circle_name,
+            "specialization": specialization, 
+            "teacher_id": teacher_id
+        }
+        circle_list.append(circle_info)
+
+    return circle_list
+
+@router.patch("/circle/")
+async def change_circle(update_circle: CircleCreate, session: AsyncSession = Depends(get_async_session)):
+    circle = await session.execute(select(Circle).filter(Circle.id == update_circle.id))
+    circle = circle.scalar_one_or_none()
+    if circle is None:
+        return HTTPException(status_code=404, content={"message": "Teacher not found"})
+    circle.circle_number = update_circle.circle_number
+    circle.circle_name = update_circle.circle_name
+    circle.specialization = update_circle.specialization
+    circle.teacher_id = update_circle.teacher_id
+
+    await session.commit()
+    return circle

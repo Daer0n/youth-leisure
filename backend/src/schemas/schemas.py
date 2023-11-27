@@ -59,3 +59,10 @@ class PartyCreate(BaseModel):
     group_name: str
     group_number: str
     circle_id: int
+
+class CircleCreate(BaseModel):
+    id: int 
+    circle_number: str
+    circle_name: str
+    specialization: str
+    teacher_id: int
