@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
-import TeacherComponent from "./components/TeacherComponent";
-import ChildrenComponent from "./components/ChildrenComponent";
-import PartyComponent from "./components/PartyComponent";
+import TeacherComponent from "./components/TeacherComponent/TeacherComponent";
+import ChildrenComponent from "./components/ChildrenComponent/ChildrenComponent";
+import PartyComponent from "./components/PartyComponent/PartyComponent";
+import CircleComponent from "./components/CircleComponent/CircleComponent";
 
 import "./App.css";
 
@@ -41,6 +42,12 @@ const App = () => {
                     >
                         Groups
                     </button>
+                    <button
+                        className="btn btn-primary mb-3"
+                        onClick={() => handleLinkClick("circle")}
+                    >
+                        Cirles
+                    </button>
                     <div className="mt-auto"></div>
                 </div>
 
@@ -48,6 +55,7 @@ const App = () => {
                     {selectedComponent === "teacher" && <TeacherComponent />}
                     {selectedComponent === "children" && <ChildrenComponent />}
                     {selectedComponent === "party" && <PartyComponent />}
+                    {selectedComponent === "circle" && <CircleComponent />}
                 </div>
             </div>
         </div>
