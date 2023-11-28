@@ -3,6 +3,7 @@ import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import CircleForm from "../CircleComponent/CircleInformationComponent";
 
 const TeacherComponent = () => {
     const [teachers, setTeachers] = useState([]);
@@ -17,6 +18,9 @@ const TeacherComponent = () => {
         specialization: "",
         adress: "",
     });
+    const [showCircleForm, setShowCircleForm] = useState(false);
+    const [selectedCircle, setSelectedCircle] = useState(null);
+    const [showButton, setShowButton] = useState(true);
 
     const fetchTeachers = async () => {
         const responce = await api.get("operations/teacher/");
@@ -56,6 +60,19 @@ const TeacherComponent = () => {
     const handleDelete = async (id) => {
         await api.delete(`operations/teacher/${id}/`);
         await fetchTeachers();
+    };
+
+    const handleCircleInformation = async () => {
+        const response = await api.get(`operations/circles`);
+        setSelectedCircle(response.data);
+        setShowCircleForm(true);
+        setShowButton(false);
+    };
+
+    const handleCloseCircleForm = () => {
+        setShowCircleForm(false);
+        setSelectedCircle(null);
+        setShowButton(true);
     };
 
     return (
@@ -231,6 +248,23 @@ const TeacherComponent = () => {
                         ))}
                     </tbody>
                 </table>
+
+                {showButton && (
+                    <button
+                        type="submit"
+                        className="btn btn-primary mb-3"
+                        onClick={handleCircleInformation}
+                    >
+                        Get all circles with teachers
+                    </button>
+                )}
+
+                {showCircleForm && selectedCircle && (
+                    <CircleForm
+                        circle={selectedCircle}
+                        onClose={handleCloseCircleForm}
+                    />
+                )}
             </div>
         </div>
     );

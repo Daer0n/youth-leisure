@@ -3,6 +3,7 @@ import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import CircleForm from "./CircleInformationComponent";
 
 const CircleComponent = () => {
     const [circles, setCircles] = useState([]);
@@ -13,6 +14,9 @@ const CircleComponent = () => {
         specialization: "",
         teacher_id: "",
     });
+    const [showCircleForm, setShowCircleForm] = useState(false);
+    const [selectedCircle, setSelectedCircle] = useState(null);
+    const [showButton, setShowButton] = useState(true);
 
     const fetchCircles = async () => {
         const responce = await api.get("operations/circle/");
@@ -48,6 +52,19 @@ const CircleComponent = () => {
     const handleDelete = async (id) => {
         await api.delete(`operations/circle/${id}/`);
         await fetchCircles();
+    };
+
+    const handleCircleInformation = async () => {
+        const response = await api.get(`operations/circles`);
+        setSelectedCircle(response.data);
+        setShowCircleForm(true);
+        setShowButton(false);
+    };
+
+    const handleCloseCircleForm = () => {
+        setShowCircleForm(false);
+        setSelectedCircle(null);
+        setShowButton(true);
     };
 
     return (
@@ -159,6 +176,23 @@ const CircleComponent = () => {
                         ))}
                     </tbody>
                 </table>
+
+                {showButton && (
+                    <button
+                        type="submit"
+                        className="btn btn-primary mb-3"
+                        onClick={handleCircleInformation}
+                    >
+                        Get all circles with teachers
+                    </button>
+                )}
+
+                {showCircleForm && selectedCircle && (
+                    <CircleForm
+                        circle={selectedCircle}
+                        onClose={handleCloseCircleForm}
+                    />
+                )}
             </div>
         </div>
     );
