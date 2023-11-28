@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import PartyForm from "./PartyInformationComponent.js";
 
 const PartyComponent = () => {
@@ -158,6 +158,11 @@ const PartyComponent = () => {
                                         onClick={() => handleDelete(party.id)}
                                     >
                                         <FontAwesomeIcon icon={faTimes} />
+                                    </button>
+                                </td>
+                                <td>
+                                    <button onClick={() => alert(party.id)}>
+                                        <FontAwesomeIcon icon={faPencilAlt} />
                                     </button>
                                 </td>
                             </tr>

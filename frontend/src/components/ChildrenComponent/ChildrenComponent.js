@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 import ChildForm from "./ChildrenInformationComponent";
+import ChangeChildInformationForm from "./ChildrenChangeInformation";
 
 const ChildrenComponent = () => {
     const [childrens, setChildren] = useState([]);
@@ -22,6 +23,8 @@ const ChildrenComponent = () => {
     });
     const [showChildForm, setShowChildForm] = useState(false);
     const [selectedChild, setSelectedChild] = useState(null);
+    const [showChangeChildInformationForm, setShowChangeChildInformationForm] =
+        useState(false);
 
     const fetchChildrens = async () => {
         const response = await api.get("operations/children/");
@@ -72,6 +75,30 @@ const ChildrenComponent = () => {
 
     const handleCloseChildForm = () => {
         setShowChildForm(false);
+        setSelectedChild(null);
+    };
+
+    const handleChangeChildrenInformation = async () => {
+        setShowChangeChildInformationForm(true);
+        await api.patch('operations/children', formData);
+        setFormData({
+            id: "",
+            full_name: "",
+            age: "",
+            school_number: "",
+            grade: "",
+            birthday_certificate_information: "",
+            address: "",
+            home_phone: "",
+            parents_information: "",
+            group_id: "",
+        });
+        fetchChildrens();
+
+    };
+
+    const handleCloseChangeChildFormInformation = () => {
+        setShowChangeChildInformationForm(false);
         setSelectedChild(null);
     };
 
@@ -281,6 +308,15 @@ const ChildrenComponent = () => {
                                         <FontAwesomeIcon icon={faTimes} />
                                     </button>
                                 </td>
+                                <td>
+                                    <button
+                                        onClick={
+                                            handleChangeChildrenInformation
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon={faPencilAlt} />
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -292,6 +328,19 @@ const ChildrenComponent = () => {
                     onClose={handleCloseChildForm}
                 />
             )}
+
+            {showChangeChildInformationForm && FormData && (
+                <ChangeChildInformationForm 
+                    child={FormData}
+                    onClose={handleCloseChangeChildFormInformation}
+                    onSubmit={handleChangeChildrenInformation}
+                    onChange={handleInputChange}
+                />
+            )
+
+            }
+
+
         </div>
     );
 };
