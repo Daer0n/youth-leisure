@@ -1,6 +1,11 @@
 import React from "react";
 
-const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
+const ChangeTeacherInformationForm = ({
+    teacher,
+    onCLose,
+    onSubmit,
+    onChange,
+}) => {
     return (
         <div>
             <div className="container">
@@ -15,7 +20,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="id"
                             name="id"
                             onChange={onChange}
-                            value={child.id}
+                            value={teacher.id}
                         />
                     </div>
 
@@ -29,7 +34,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="full_name"
                             name="full_name"
                             onChange={onChange}
-                            value={child.full_name}
+                            value={teacher.full_name}
                         />
                     </div>
 
@@ -43,7 +48,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="age"
                             name="age"
                             onChange={onChange}
-                            value={child.age}
+                            value={teacher.age}
                         />
                     </div>
 
@@ -57,7 +62,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="school_number"
                             name="school_number"
                             onChange={onChange}
-                            value={child.school_number}
+                            value={teacher.school_number}
                         />
                     </div>
 
@@ -71,7 +76,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="grade"
                             name="grade"
                             onChange={onChange}
-                            value={child.grade}
+                            value={teacher.grade}
                         />
                     </div>
 
@@ -88,7 +93,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="birthday_certificate_information"
                             name="birthday_certificate_information"
                             onChange={onChange}
-                            value={child.birthday_certificate_information}
+                            value={teacher.birthday_certificate_information}
                         />
                     </div>
 
@@ -102,7 +107,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="address"
                             name="address"
                             onChange={onChange}
-                            value={child.address}
+                            value={teacher.address}
                         />
                     </div>
 
@@ -116,7 +121,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="home_phone"
                             name="home_phone"
                             onChange={onChange}
-                            value={child.home_phone}
+                            value={teacher.home_phone}
                         />
                     </div>
 
@@ -133,7 +138,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="parents_information"
                             name="parents_information"
                             onChange={onChange}
-                            value={child.parents_information}
+                            value={teacher.parents_information}
                         />
                     </div>
 
@@ -147,18 +152,17 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                             id="group_id"
                             name="group_id"
                             onChange={onChange}
-                            value={child.group_id}
+                            value={teacher.group_id}
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-primary mb-3" onClick={onClose}>
+                    <button type="submit" className="btn btn-primary mb-3" onClick={onCLose}>
                         Submit
                     </button>
                 </form>
             </div>
         </div>
-        
-    )
-}
+    );
+};
 
-export default ChangeChildInformationForm
+export default ChangeTeacherInformationForm

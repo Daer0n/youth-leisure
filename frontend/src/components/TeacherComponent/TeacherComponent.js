@@ -4,6 +4,8 @@ import api from "../../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import CircleForm from "../CircleComponent/CircleInformationComponent";
+import ChangeChildInformationForm from "../ChildrenComponent/ChildrenChangeInformation";
+import ChangeTeacherInformationForm from "./TeacherChangeInformation";
 
 const TeacherComponent = () => {
     const [teachers, setTeachers] = useState([]);
@@ -21,6 +23,10 @@ const TeacherComponent = () => {
     const [showCircleForm, setShowCircleForm] = useState(false);
     const [selectedCircle, setSelectedCircle] = useState(null);
     const [showButton, setShowButton] = useState(true);
+    const [
+        showChangeTeacherInformationForm,
+        setShowChangeTeacherInformationForm,
+    ] = useState(false);
 
     const fetchTeachers = async () => {
         const responce = await api.get("operations/teacher/");
@@ -73,6 +79,16 @@ const TeacherComponent = () => {
         setShowCircleForm(false);
         setSelectedCircle(null);
         setShowButton(true);
+    };
+
+    const handleChangeTeacherInformation = async () => {
+        setShowChangeTeacherInformationForm(true);
+        await api.patch("operations/teacher/", formData);
+        fetchTeachers();
+    };
+
+    const handleCloseChangeTeacherFormInformation = () => {
+        setShowChangeTeacherInformationForm(false);
     };
 
     return (
@@ -244,13 +260,14 @@ const TeacherComponent = () => {
                                         <FontAwesomeIcon icon={faTimes} />
                                     </button>
                                 </td>
-                                <td>    
+                                <td>
                                     <button
-                                        onClick={() => alert(teacher.id)}
+                                        onClick={() =>
+                                            handleChangeTeacherInformation
+                                        }
                                     >
-                                        <FontAwesomeIcon icon={faPencilAlt}/>   
+                                        <FontAwesomeIcon icon={faPencilAlt} />
                                     </button>
-                
                                 </td>
                             </tr>
                         ))}
@@ -271,6 +288,15 @@ const TeacherComponent = () => {
                     <CircleForm
                         circle={selectedCircle}
                         onClose={handleCloseCircleForm}
+                    />
+                )}
+
+                {showChangeTeacherInformationForm && formData && (
+                    <ChangeTeacherInformationForm
+                        teacher={formData}
+                        onClose={handleCloseChangeTeacherFormInformation}
+                        onSubmit={handleChangeTeacherInformation}
+                        onChange={handleInputChange}
                     />
                 )}
             </div>

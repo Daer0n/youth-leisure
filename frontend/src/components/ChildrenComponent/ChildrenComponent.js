@@ -21,6 +21,18 @@ const ChildrenComponent = () => {
         parents_information: "",
         group_id: "",
     });
+    const [formInputData, setFormInputData] = useState({
+        id: "",
+        full_name: "",
+        age: "",
+        school_number: "",
+        grade: "",
+        birthday_certificate_information: "",
+        address: "",
+        home_phone: "",
+        parents_information: "",
+        group_id: "",
+    });
     const [showChildForm, setShowChildForm] = useState(false);
     const [selectedChild, setSelectedChild] = useState(null);
     const [showChangeChildInformationForm, setShowChangeChildInformationForm] =
@@ -40,6 +52,15 @@ const ChildrenComponent = () => {
         const inputValue = type === "checkbox" ? checked : value;
         setFormData((prevFormData) => ({
             ...prevFormData,
+            [name]: inputValue,
+        }));
+    };
+
+    const handleFormInputChange = (event) => {
+        const { name, value, type, checked } = event.target;
+        const inputValue = type === "checkbox" ? checked : value;
+        setFormInputData((prevInputFormData) => ({
+            ...prevInputFormData,
             [name]: inputValue,
         }));
     };
@@ -80,8 +101,7 @@ const ChildrenComponent = () => {
 
     const handleChangeChildrenInformation = async () => {
         setShowChangeChildInformationForm(true);
-        await api.patch('operations/children', formData);
-        setFormData({
+        setFormInputData({
             id: "",
             full_name: "",
             age: "",
@@ -93,13 +113,13 @@ const ChildrenComponent = () => {
             parents_information: "",
             group_id: "",
         });
+        await api.patch('operations/children/', formInputData);
         fetchChildrens();
 
     };
 
     const handleCloseChangeChildFormInformation = () => {
         setShowChangeChildInformationForm(false);
-        setSelectedChild(null);
     };
 
     return (
@@ -329,12 +349,12 @@ const ChildrenComponent = () => {
                 />
             )}
 
-            {showChangeChildInformationForm && FormData && (
+            {showChangeChildInformationForm && formInputData && (
                 <ChangeChildInformationForm 
-                    child={FormData}
+                    child={formInputData}
                     onClose={handleCloseChangeChildFormInformation}
                     onSubmit={handleChangeChildrenInformation}
-                    onChange={handleInputChange}
+                    onChange={handleFormInputChange}
                 />
             )
 
