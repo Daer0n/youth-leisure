@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
+const ChildrenInputForm = ({ child, onSubmit, onChange}) => {
     return (
         <div>
             <div className="container">
@@ -151,7 +151,7 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-primary mb-3" onClick={onClose}>
+                    <button type="submit" className="btn btn-primary mb-3" onClick={onSubmit}>
                         Submit
                     </button>
                 </form>
@@ -161,4 +161,4 @@ const ChangeChildInformationForm = ({ child, onClose, onSubmit, onChange}) => {
     )
 }
 
-export default ChangeChildInformationForm
+export default ChildrenInputForm

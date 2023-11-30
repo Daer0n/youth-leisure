@@ -1,7 +1,7 @@
 import React from "react";
-import "./ChildrenInformationComponent.css"
+import "./ChildrenInformation.css"
 
-const ChildForm = ({ child, onClose }) => {
+const ChildrenForm = ({ child, onClose }) => {
     return (
         <div className="container child_form">
             <h2 className="text-center mt-100">Children Information</h2>
@@ -28,4 +28,4 @@ const ChildForm = ({ child, onClose }) => {
     );
 };
 
-export default ChildForm;
+export default ChildrenForm;

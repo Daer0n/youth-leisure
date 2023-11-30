@@ -4,7 +4,6 @@ import api from "../../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import CircleForm from "../CircleComponent/CircleInformationComponent";
-import ChangeChildInformationForm from "../ChildrenComponent/ChildrenChangeInformation";
 import ChangeTeacherInformationForm from "./TeacherChangeInformation";
 
 const TeacherComponent = () => {
