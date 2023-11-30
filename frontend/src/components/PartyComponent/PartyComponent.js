@@ -3,7 +3,10 @@ import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import PartyForm from "./PartyInformationComponent.js";
+import PartyForm from "./PartyInformation.js";
+import PartyInputForm from "./PartyInputForm.js";
+import { handleInputChange, handleFormInputChange } from "../InputChange.js";
+import axios from "axios";
 
 const PartyComponent = () => {
     const [partys, setPartys] = useState([]);
@@ -13,8 +16,16 @@ const PartyComponent = () => {
         group_number: "",
         circle_id: "",
     });
+    const [formInputData, setFormInputData] = useState({
+        id: "",
+        group_name: "",
+        group_number: "",
+        circle_id: "",
+    });
     const [showPartyForm, setShowPartyForm] = useState(false);
     const [selectedParty, setSelectedParty] = useState(null);
+    const [showChangePartyInformationForm, setShowChangePartyInformationForm] =
+        useState(false);
 
     const fetchPartys = async () => {
         const responce = await api.get("operations/party/");
@@ -30,6 +41,15 @@ const PartyComponent = () => {
         const inputValue = type === "checkbox" ? checked : value;
         setFormData((prevFormData) => ({
             ...prevFormData,
+            [name]: inputValue,
+        }));
+    };
+
+    const handleFormInputChange = (event) => {
+        const { name, value, type, checked } = event.target;
+        const inputValue = type === "checkbox" ? checked : value;
+        setFormInputData((prevInputFormData) => ({
+            ...prevInputFormData,
             [name]: inputValue,
         }));
     };
@@ -62,73 +82,29 @@ const PartyComponent = () => {
         setSelectedParty(null);
     };
 
+    const handleChangePartyInformation = async () => {
+        setShowChangePartyInformationForm(false);
+        await api.patch("operations/party/", formInputData);
+        await fetchPartys();
+        setFormInputData({
+            id: "",
+            group_name: "",
+            group_number: "",
+            circle_id: "",
+        });
+    };
+
     return (
         <div>
             <div className="text-center">
                 <div className="display-4">Groups</div>
             </div>
             <div className="container">
-                <form onSubmit={handleFormSubmit}>
-                    <div className="mb-3 mt-3">
-                        <label htmlFor="id" className="form-label">
-                            Id
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="id"
-                            name="id"
-                            onChange={handleInputChange}
-                            value={formData.id}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="group_name" className="form-label">
-                            Group name
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="group_name"
-                            name="group_name"
-                            onChange={handleInputChange}
-                            value={formData.group_name}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="group_number" className="form-label">
-                            Group number
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="group_number"
-                            name="group_number"
-                            onChange={handleInputChange}
-                            value={formData.group_number}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="circle_id" className="form-label">
-                            Circle id
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="circle_id"
-                            name="circle_id"
-                            onChange={handleInputChange}
-                            value={formData.circle_id}
-                        />
-                    </div>
-
-                    <button type="submit" className="btn btn-primary mb-3">
-                        Submit
-                    </button>
-                </form>
+                <PartyInputForm
+                    group={formData}
+                    onSubmit={handleFormSubmit}
+                    onChange={handleInputChange}
+                />
 
                 <table className="table table-striped table-bordered table-hover">
                     <thead>
@@ -161,7 +137,13 @@ const PartyComponent = () => {
                                     </button>
                                 </td>
                                 <td>
-                                    <button onClick={() => alert(party.id)}>
+                                    <button
+                                        onClick={() =>
+                                            setShowChangePartyInformationForm(
+                                                true
+                                            )
+                                        }
+                                    >
                                         <FontAwesomeIcon icon={faPencilAlt} />
                                     </button>
                                 </td>
@@ -174,6 +156,14 @@ const PartyComponent = () => {
                 <PartyForm
                     party={selectedParty}
                     onClose={handleClosePartyForm}
+                />
+            )}
+
+            {showChangePartyInformationForm && formInputData && (
+                <PartyInputForm
+                    group={formInputData}
+                    onSubmit={handleChangePartyInformation}
+                    onChange={handleFormInputChange}
                 />
             )}
         </div>

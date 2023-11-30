@@ -35,8 +35,7 @@ const ChildrenComponent = () => {
     });
     const [showChildForm, setShowChildForm] = useState(false);
     const [selectedChild, setSelectedChild] = useState(null);
-    const [showChangeChildInformationForm, setShowChangeChildInformationForm] =
-        useState(false);
+    const [showChangeChildInformationForm, setShowChangeChildInformationForm] = useState(false);
 
     const fetchChildrens = async () => {
         const response = await api.get("operations/children/");
@@ -180,9 +179,7 @@ const ChildrenComponent = () => {
                                 <td>
                                     <button
                                         onClick={() => {
-                                            setShowChangeChildInformationForm(
-                                                true
-                                            );
+                                            setShowChangeChildInformationForm(true);
                                         }}
                                     >
                                         <FontAwesomeIcon icon={faPencilAlt} />

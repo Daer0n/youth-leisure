@@ -1,5 +1,5 @@
 import React from "react";
-import "./PartyInformationComponent.css";
+import "./PartyInformation.css";
 
 const PartyForm = ({ party, onClose }) => {
   return (
