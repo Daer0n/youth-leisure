@@ -1,5 +1,5 @@
 import React from "react";
-import "./CircleInformationComponent.css";
+import "./CircleInformation.css";
 
 const CircleForm = ({ circle, onClose }) => {
   return (

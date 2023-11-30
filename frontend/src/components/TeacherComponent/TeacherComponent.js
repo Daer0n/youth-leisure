@@ -3,7 +3,7 @@ import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import CircleForm from "../CircleComponent/CircleInformationComponent";
+import CircleForm from "../CircleComponent/CircleInformation";
 import TeacherInputForm from "./TeacherInputForm";
 
 const TeacherComponent = () => {
@@ -123,7 +123,6 @@ const TeacherComponent = () => {
                 <div className="display-4">Teachers</div>
             </div>
             <div className="container">
-
                 <TeacherInputForm
                     teacher={formData}
                     onSubmit={handleFormSubmit}

@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import PartyForm from "./PartyInformation.js";
 import PartyInputForm from "./PartyInputForm.js";
-import { handleInputChange, handleFormInputChange } from "../InputChange.js";
 import axios from "axios";
 
 const PartyComponent = () => {
