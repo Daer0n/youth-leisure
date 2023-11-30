@@ -1,11 +1,6 @@
 import React from "react";
 
-const ChangeTeacherInformationForm = ({
-    teacher,
-    onCLose,
-    onSubmit,
-    onChange,
-}) => {
+const TeacherInputForm = ({ teacher, onSubmit, onChange }) => {
     return (
         <div>
             <div className="container">
@@ -39,124 +34,108 @@ const ChangeTeacherInformationForm = ({
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="age" className="form-label">
-                            Age
+                        <label htmlFor="gender" className="form-label">
+                            Gender
                         </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="age"
-                            name="age"
+                            id="gender"
+                            name="gender"
                             onChange={onChange}
-                            value={teacher.age}
+                            value={teacher.gender}
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="school_number" className="form-label">
-                            School number
+                        <label htmlFor="passport" className="form-label">
+                            Passport
                         </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="school_number"
-                            name="school_number"
+                            id="passport"
+                            name="passport"
                             onChange={onChange}
-                            value={teacher.school_number}
+                            value={teacher.passport}
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="grade" className="form-label">
-                            Grade
+                        <label htmlFor="birthday" className="form-label">
+                            Birthday
                         </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="grade"
-                            name="grade"
+                            id="birthday"
+                            name="birthday"
                             onChange={onChange}
-                            value={teacher.grade}
+                            value={teacher.birthday}
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label
-                            htmlFor="birthday_certificate_information"
-                            className="form-label"
-                        >
-                            Birthday certificate information
+                        <label htmlFor="family_status" className="form-label">
+                            Family status
                         </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="birthday_certificate_information"
-                            name="birthday_certificate_information"
+                            id="family_status"
+                            name="family_status"
                             onChange={onChange}
-                            value={teacher.birthday_certificate_information}
+                            value={teacher.family_status}
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="address" className="form-label">
-                            Address
+                        <label htmlFor="education" className="form-label">
+                            Education
                         </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="address"
-                            name="address"
+                            id="education"
+                            name="education"
                             onChange={onChange}
-                            value={teacher.address}
+                            value={teacher.education}
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="home_phone" className="form-label">
-                            Home phone
+                        <label htmlFor="specialization" className="form-label">
+                            Specialization
                         </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="home_phone"
-                            name="home_phone"
+                            id="specialization"
+                            name="specialization"
                             onChange={onChange}
-                            value={teacher.home_phone}
+                            value={teacher.specialization}
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label
-                            htmlFor="parents_information"
-                            className="form-label"
-                        >
-                            Parents information
+                        <label htmlFor="adress" className="form-label">
+                            Adress
                         </label>
                         <input
                             type="text"
                             className="form-control"
-                            id="parents_information"
-                            name="parents_information"
+                            id="adress"
+                            name="adress"
                             onChange={onChange}
-                            value={teacher.parents_information}
+                            value={teacher.adress}
                         />
                     </div>
 
-                    <div className="mb-3">
-                        <label htmlFor="group_id" className="form-label">
-                            Group id
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="group_id"
-                            name="group_id"
-                            onChange={onChange}
-                            value={teacher.group_id}
-                        />
-                    </div>
-
-                    <button type="submit" className="btn btn-primary mb-3" onClick={onCLose}>
+                    <button
+                        type="submit"
+                        className="btn btn-primary mb-3"
+                        onClick={onSubmit}
+                    >
                         Submit
                     </button>
                 </form>
@@ -165,4 +144,4 @@ const ChangeTeacherInformationForm = ({
     );
 };
 
-export default ChangeTeacherInformationForm
+export default TeacherInputForm;

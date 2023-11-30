@@ -4,11 +4,22 @@ import api from "../../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import CircleForm from "../CircleComponent/CircleInformationComponent";
-import ChangeTeacherInformationForm from "./TeacherChangeInformation";
+import TeacherInputForm from "./TeacherInputForm";
 
 const TeacherComponent = () => {
     const [teachers, setTeachers] = useState([]);
     const [formData, setFormData] = useState({
+        id: "",
+        full_name: "",
+        gender: "",
+        passport: "",
+        birthday: "",
+        family_status: "",
+        education: "",
+        specialization: "",
+        adress: "",
+    });
+    const [formInputData, setFormInputData] = useState({
         id: "",
         full_name: "",
         gender: "",
@@ -41,6 +52,15 @@ const TeacherComponent = () => {
         const inputValue = type === "checkbox" ? checked : value;
         setFormData((prevFormData) => ({
             ...prevFormData,
+            [name]: inputValue,
+        }));
+    };
+
+    const handleFormInputChange = (event) => {
+        const { name, value, type, checked } = event.target;
+        const inputValue = type === "checkbox" ? checked : value;
+        setFormInputData((prevInputFormData) => ({
+            ...prevInputFormData,
             [name]: inputValue,
         }));
     };
@@ -81,13 +101,20 @@ const TeacherComponent = () => {
     };
 
     const handleChangeTeacherInformation = async () => {
-        setShowChangeTeacherInformationForm(true);
-        await api.patch("operations/teacher/", formData);
-        fetchTeachers();
-    };
-
-    const handleCloseChangeTeacherFormInformation = () => {
         setShowChangeTeacherInformationForm(false);
+        await api.patch("operations/teacher/", formInputData);
+        await fetchTeachers();
+        setFormInputData({
+            id: "",
+            full_name: "",
+            gender: "",
+            passport: "",
+            birthday: "",
+            family_status: "",
+            education: "",
+            specialization: "",
+            adress: "",
+        });
     };
 
     return (
@@ -96,137 +123,12 @@ const TeacherComponent = () => {
                 <div className="display-4">Teachers</div>
             </div>
             <div className="container">
-                <form onSubmit={handleFormSubmit}>
-                    <div className="mb-3 mt-3">
-                        <label htmlFor="id" className="form-label">
-                            Id
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="id"
-                            name="id"
-                            onChange={handleInputChange}
-                            value={formData.id}
-                        />
-                    </div>
 
-                    <div className="mb-3">
-                        <label htmlFor="full_name" className="form-label">
-                            Full name
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="full_name"
-                            name="full_name"
-                            onChange={handleInputChange}
-                            value={formData.full_name}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="gender" className="form-label">
-                            Gender
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="gender"
-                            name="gender"
-                            onChange={handleInputChange}
-                            value={formData.gender}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="passport" className="form-label">
-                            Passport
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="passport"
-                            name="passport"
-                            onChange={handleInputChange}
-                            value={formData.passport}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="birthday" className="form-label">
-                            Birthday
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="birthday"
-                            name="birthday"
-                            onChange={handleInputChange}
-                            value={formData.birthday}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="family_status" className="form-label">
-                            Family_status
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="family_status"
-                            name="family_status"
-                            onChange={handleInputChange}
-                            value={formData.family_status}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="education" className="form-label">
-                            Education
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="education"
-                            name="education"
-                            onChange={handleInputChange}
-                            value={formData.education}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="specialization" className="form-label">
-                            Specialization
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="specialization"
-                            name="specialization"
-                            onChange={handleInputChange}
-                            value={formData.specialization}
-                        />
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="adress" className="form-label">
-                            Adress
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="adress"
-                            name="adress"
-                            onChange={handleInputChange}
-                            value={formData.adress}
-                        />
-                    </div>
-
-                    <button type="submit" className="btn btn-primary mb-3">
-                        Submit
-                    </button>
-                </form>
+                <TeacherInputForm
+                    teacher={formData}
+                    onSubmit={handleFormSubmit}
+                    onChange={handleInputChange}
+                />
 
                 <table className="table table-striped table-bordered table-hover">
                     <thead>
@@ -262,7 +164,9 @@ const TeacherComponent = () => {
                                 <td>
                                     <button
                                         onClick={() =>
-                                            handleChangeTeacherInformation
+                                            setShowChangeTeacherInformationForm(
+                                                true
+                                            )
                                         }
                                     >
                                         <FontAwesomeIcon icon={faPencilAlt} />
@@ -290,12 +194,11 @@ const TeacherComponent = () => {
                     />
                 )}
 
-                {showChangeTeacherInformationForm && formData && (
-                    <ChangeTeacherInformationForm
-                        teacher={formData}
-                        onClose={handleCloseChangeTeacherFormInformation}
+                {showChangeTeacherInformationForm && formInputData && (
+                    <TeacherInputForm
+                        teacher={formInputData}
                         onSubmit={handleChangeTeacherInformation}
-                        onChange={handleInputChange}
+                        onChange={handleFormInputChange}
                     />
                 )}
             </div>
