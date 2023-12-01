@@ -21,12 +21,16 @@ async def add_children(new_children: ChildrenCreate, session: AsyncSession = Dep
 
 @router.delete("/children/{children_id}/")
 async def delete_children(children_id: int, session: AsyncSession = Depends(get_async_session)):
-    stmt = delete(Children).where(Children.id == children_id)
-    result = await session.execute(stmt)
-    deleted_count = result.rowcount
-    if deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Children not found")
-    await session.commit()
+    async with session.begin():
+        delete_transition_stmt = delete(Transition).where(Transition.children_id == children_id)
+        await session.execute(delete_transition_stmt)
+        delete_children_stmt = delete(Children).where(Children.id == children_id)
+        result = await session.execute(delete_children_stmt)
+        deleted_count = result.rowcount
+
+        if deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Children not found")
+        
     return {'ok': True}
 
 @router.get("/children/")
@@ -421,9 +425,12 @@ async def change_transition(update_transition: TransitionCreate, session: AsyncS
 @router.patch("/children/transition/")
 async def update_children_group(transition: TransitionCreate, session: AsyncSession = Depends(get_async_session)):
     children = await session.execute(select(Children).filter(Transition.children_id == Children.id))
-    children = children.scalar_one_or_none()
+    children = children.fetchone()
+
     if children is None:
         return HTTPException(status_code=404, content={"message": "Children not found"})
-    children.group_id = transition.group_id_to
+
+    children_obj = children[0]
+    children_obj.group_id = transition.group_id_to
     await session.commit()
     return {"ok": True}
