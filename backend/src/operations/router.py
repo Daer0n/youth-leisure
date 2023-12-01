@@ -400,7 +400,6 @@ async def get_all_transition(session: AsyncSession = Depends(get_async_session))
             "children_id": children_id
         }
         transition_list.append(transition_info)
-
     return transition_list
 
 @router.patch("/transition/")
@@ -418,3 +417,13 @@ async def change_transition(update_transition: TransitionCreate, session: AsyncS
 
     await session.commit()
     return transition
+
+@router.patch("/children/transition/")
+async def update_children_group(transition: TransitionCreate, session: AsyncSession = Depends(get_async_session)):
+    children = await session.execute(select(Children).filter(Transition.children_id == Children.id))
+    children = children.scalar_one_or_none()
+    if children is None:
+        return HTTPException(status_code=404, content={"message": "Children not found"})
+    children.group_id = transition.group_id_to
+    await session.commit()
+    return {"ok": True}

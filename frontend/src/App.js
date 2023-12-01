@@ -47,7 +47,7 @@ const App = () => {
                         className="btn btn-primary mb-3"
                         onClick={() => handleLinkClick("circle")}
                     >
-                        Cirles
+                        Circles
                     </button>
                     <button
                         className="btn btn-primary mb-3"

@@ -25,8 +25,6 @@ const TransitionComponent = () => {
         date_finish: "",
         children_id: "",
     });
-    const [showTransitionForm, setShowTransitionForm] = useState(false);
-    const [selectedTransition, setSelectedTransition] = useState(null);
     const [
         showChangeTransitionInformationForm,
         setShowChangeTransitionInformationForm,
@@ -62,6 +60,7 @@ const TransitionComponent = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         await api.post("operations/transition/", formData);
+        await api.patch("operations/children/transition/", formData);
         fetchTransitions();
         setFormData({
             id: "",
@@ -82,6 +81,7 @@ const TransitionComponent = () => {
     const handleChangeTransitionInformation = async () => {
         setShowChangeTransitionInformationForm(false);
         await api.patch("operations/transition/", formInputData);
+        await api.patch("operations/children/transition/", formInputData);
         await fetchTransitions();
         setFormInputData({
             id: "",
@@ -97,7 +97,7 @@ const TransitionComponent = () => {
     return (
         <div>
             <div className="text-center">
-                <div className="display-4">Groups</div>
+                <div className="display-4">Transitions</div>
             </div>
             <div className="container">
                 <TransitionInputForm
@@ -128,7 +128,9 @@ const TransitionComponent = () => {
                                 <td>{transition.children_id}</td>
                                 <td>
                                     <button
-                                        onClick={() => handleDelete(transition.id)}
+                                        onClick={() =>
+                                            handleDelete(transition.id)
+                                        }
                                     >
                                         <FontAwesomeIcon icon={faTimes} />
                                     </button>
@@ -152,7 +154,7 @@ const TransitionComponent = () => {
 
             {showChangeTransitionInformationForm && formInputData && (
                 <TransitionInputForm
-                    group={formInputData}
+                    transition={formInputData}
                     onSubmit={handleChangeTransitionInformation}
                     onChange={handleFormInputChange}
                 />
