@@ -66,3 +66,12 @@ class CircleCreate(BaseModel):
     circle_name: str
     specialization: str
     teacher_id: int
+
+class TransitionCreate(BaseModel):
+    id: int
+    transition_date: str
+    group_id_from: int
+    group_id_to: int
+    date_start: str 
+    date_finish: str
+    children_id: int

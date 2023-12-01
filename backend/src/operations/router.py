@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
 from database.database import get_async_session
-from models.models import Children, Teacher, Party, Circle
-from schemas.schemas import ChildrenCreate, ChildrenRead, TeacherCreate, PartyCreate, CircleCreate
+from models.models import Children, Teacher, Party, Circle, Transition
+from schemas.schemas import ChildrenCreate, TransitionCreate, TeacherCreate, PartyCreate, CircleCreate
 
 router = APIRouter(
     prefix="/operations",
@@ -206,13 +206,13 @@ async def get_all_party(session: AsyncSession = Depends(get_async_session)):
         group_number, 
         circle_id
     ) in party:
-        child_info = {
+        party_info = {
             "id": id,
             "group_name": group_name,
             "group_number": group_number,
             "circle_id": circle_id, 
         }
-        party_list.append(child_info)
+        party_list.append(party_info)
 
     return party_list
 
@@ -351,3 +351,70 @@ async def change_circle(update_circle: CircleCreate, session: AsyncSession = Dep
 
     await session.commit()
     return circle
+
+@router.post("/transition/")
+async def add_transition(new_transition: TransitionCreate, session: AsyncSession = Depends(get_async_session)):
+    stmt = insert(Transition).values(**new_transition.dict())
+    await session.execute(stmt)
+    await session.commit()
+    return {"status": "success"}
+
+@router.delete("/transition/{transition_id}/")
+async def delete_transition(transition_id: int, session: AsyncSession = Depends(get_async_session)):
+    stmt = delete(Transition).where(Transition.id == transition_id)
+    result = await session.execute(stmt)
+    deleted_count = result.rowcount
+    if deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Transition not found")
+    await session.commit()
+    return {'ok': True}
+
+@router.get("/transition/")
+async def get_all_transition(session: AsyncSession = Depends(get_async_session)):
+    transition = await session.execute(select(
+        Transition.id, 
+        Transition.transition_date, 
+        Transition.group_id_from, 
+        Transition.group_id_to, 
+        Transition.date_start,
+        Transition.date_finish, 
+        Transition.children_id
+    ))
+    transition_list = []
+    for (
+        id, 
+        transition_date, 
+        group_id_from, 
+        group_id_to,
+        date_start, 
+        date_finish,
+        children_id
+    ) in transition:
+        transition_info = {
+            "id": id,
+            "transition_date": transition_date,
+            "group_id_from": group_id_from,
+            "group_id_to": group_id_to, 
+            "date_start": date_start,
+            "date_finish": date_finish,
+            "children_id": children_id
+        }
+        transition_list.append(transition_info)
+
+    return transition_list
+
+@router.patch("/transition/")
+async def change_transition(update_transition: TransitionCreate, session: AsyncSession = Depends(get_async_session)):
+    transition = await session.execute(select(Transition).filter(Transition.id == update_transition.id))
+    transition = transition.scalar_one_or_none()
+    if transition is None:
+        return HTTPException(status_code=404, content={"message": "Transition not found"})
+    transition.transition_date = update_transition.transition_date
+    transition.group_id_from = update_transition.group_id_from
+    transition.group_id_to = update_transition.group_id_to
+    transition.date_start = update_transition.date_start
+    transition.date_finish = update_transition.date_finish
+    transition.children_id = update_transition.children_id
+
+    await session.commit()
+    return transition

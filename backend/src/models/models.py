@@ -54,7 +54,8 @@ class Transition(Base):
 
     id = Column(Integer, primary_key=True)
     transition_date = Column(String, nullable=False)
-    group_id_from = Column(Integer, ForeignKey(Party.id))
+    group_id_from = Column(Integer, nullable=False)
     group_id_to = Column(Integer, ForeignKey(Party.id))
     date_start = Column(String, nullable=False)
     date_finish = Column(String, nullable=False)
+    children_id = Column(Integer, ForeignKey(Children.id))
