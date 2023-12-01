@@ -4,6 +4,7 @@ import TeacherComponent from "./components/TeacherComponent/TeacherComponent";
 import ChildrenComponent from "./components/ChildrenComponent/ChildrenComponent";
 import PartyComponent from "./components/PartyComponent/PartyComponent";
 import CircleComponent from "./components/CircleComponent/CircleComponent";
+import TransitionComponent from "./components/TransitionComponent/TransitionComponent";
 
 import "./App.css";
 
@@ -48,6 +49,12 @@ const App = () => {
                     >
                         Cirles
                     </button>
+                    <button
+                        className="btn btn-primary mb-3"
+                        onClick={() => handleLinkClick("transition")}
+                    >
+                        Transitions
+                    </button>
                     <div className="mt-auto"></div>
                 </div>
 
@@ -56,6 +63,7 @@ const App = () => {
                     {selectedComponent === "children" && <ChildrenComponent />}
                     {selectedComponent === "party" && <PartyComponent />}
                     {selectedComponent === "circle" && <CircleComponent />}
+                    {selectedComponent === "transition" && <TransitionComponent />}
                 </div>
             </div>
         </div>

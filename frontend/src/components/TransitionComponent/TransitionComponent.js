@@ -3,40 +3,42 @@ import api from "../../api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import TransitionInputForm from "./TransitionInputForm";
 
-const PartyComponent = () => {
-    const [partys, setPartys] = useState([]);
+const TransitionComponent = () => {
+    const [transitions, setTransitions] = useState([]);
     const [formData, setFormData] = useState({
-        id: "", 
-        transition_date: "", 
-        group_id_from: "", 
+        id: "",
+        transition_date: "",
+        group_id_from: "",
         group_id_to: "",
-        date_start: "", 
+        date_start: "",
         date_finish: "",
-        children_id: "" 
+        children_id: "",
     });
     const [formInputData, setFormInputData] = useState({
-        id: "", 
-        transition_date: "", 
-        group_id_from: "", 
+        id: "",
+        transition_date: "",
+        group_id_from: "",
         group_id_to: "",
-        date_start: "", 
+        date_start: "",
         date_finish: "",
-        children_id: "" 
+        children_id: "",
     });
-    const [showPartyForm, setShowPartyForm] = useState(false);
-    const [selectedParty, setSelectedParty] = useState(null);
-    const [showChangePartyInformationForm, setShowChangePartyInformationForm] =
-        useState(false);
+    const [showTransitionForm, setShowTransitionForm] = useState(false);
+    const [selectedTransition, setSelectedTransition] = useState(null);
+    const [
+        showChangeTransitionInformationForm,
+        setShowChangeTransitionInformationForm,
+    ] = useState(false);
 
-    const fetchPartys = async () => {
-        const responce = await api.get("operations/party/");
-        setPartys(responce.data);
+    const fetchTransitions = async () => {
+        const responce = await api.get("operations/transition/");
+        setTransitions(responce.data);
     };
 
     useEffect(() => {
-        fetchPartys();
+        fetchTransitions();
     }, []);
 
     const handleInputChange = (event) => {
@@ -59,41 +61,36 @@ const PartyComponent = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        await api.post("operations/party/", formData);
-        fetchPartys();
+        await api.post("operations/transition/", formData);
+        fetchTransitions();
         setFormData({
             id: "",
-            group_name: "",
-            group_number: "",
-            circle_id: "",
+            transition_date: "",
+            group_id_from: "",
+            group_id_to: "",
+            date_start: "",
+            date_finish: "",
+            children_id: "",
         });
     };
 
     const handleDelete = async (id) => {
-        await api.delete(`operations/party/${id}/`);
-        await fetchPartys();
+        await api.delete(`operations/transition/${id}/`);
+        await fetchTransitions();
     };
 
-    const handlePartyInformation = async (id) => {
-        const response = await api.get(`operations/party/${id}/children/`);
-        setSelectedParty(response.data);
-        setShowPartyForm(true);
-    };
-
-    const handleClosePartyForm = () => {
-        setShowPartyForm(false);
-        setSelectedParty(null);
-    };
-
-    const handleChangePartyInformation = async () => {
-        setShowChangePartyInformationForm(false);
-        await api.patch("operations/party/", formInputData);
-        await fetchPartys();
+    const handleChangeTransitionInformation = async () => {
+        setShowChangeTransitionInformationForm(false);
+        await api.patch("operations/transition/", formInputData);
+        await fetchTransitions();
         setFormInputData({
             id: "",
-            group_name: "",
-            group_number: "",
-            circle_id: "",
+            transition_date: "",
+            group_id_from: "",
+            group_id_to: "",
+            date_start: "",
+            date_finish: "",
+            children_id: "",
         });
     };
 
@@ -103,8 +100,8 @@ const PartyComponent = () => {
                 <div className="display-4">Groups</div>
             </div>
             <div className="container">
-                <PartyInputForm
-                    group={formData}
+                <TransitionInputForm
+                    transition={formData}
                     onSubmit={handleFormSubmit}
                     onChange={handleInputChange}
                 />
@@ -112,29 +109,26 @@ const PartyComponent = () => {
                 <table className="table table-striped table-bordered table-hover">
                     <thead>
                         <th>Id</th>
-                        <th>Group name</th>
-                        <th>Group number</th>
-                        <th>Circle id</th>
+                        <th>Transition date</th>
+                        <th>Group id from</th>
+                        <th>Group id to</th>
+                        <th>Date start</th>
+                        <th>Date finish</th>
+                        <th>Children id</th>
                     </thead>
                     <tbody>
-                        {partys.map((party) => (
-                            <tr key={party.id}>
-                                <td>{party.id}</td>
-                                <td>
-                                    <div
-                                        className="link"
-                                        onClick={() =>
-                                            handlePartyInformation(party.id)
-                                        }
-                                    >
-                                        {party.group_name}
-                                    </div>
-                                </td>
-                                <td>{party.group_number}</td>
-                                <td>{party.circle_id}</td>
+                        {transitions.map((transition) => (
+                            <tr key={transition.id}>
+                                <td>{transition.id}</td>
+                                <td>{transition.transition_date}</td>
+                                <td>{transition.group_id_from}</td>
+                                <td>{transition.group_id_to}</td>
+                                <td>{transition.date_start}</td>
+                                <td>{transition.date_finish}</td>
+                                <td>{transition.children_id}</td>
                                 <td>
                                     <button
-                                        onClick={() => handleDelete(party.id)}
+                                        onClick={() => handleDelete(transition.id)}
                                     >
                                         <FontAwesomeIcon icon={faTimes} />
                                     </button>
@@ -142,7 +136,7 @@ const PartyComponent = () => {
                                 <td>
                                     <button
                                         onClick={() =>
-                                            setShowChangePartyInformationForm(
+                                            setShowChangeTransitionInformationForm(
                                                 true
                                             )
                                         }
@@ -155,17 +149,11 @@ const PartyComponent = () => {
                     </tbody>
                 </table>
             </div>
-            {showPartyForm && selectedParty && (
-                <PartyForm
-                    party={selectedParty}
-                    onClose={handleClosePartyForm}
-                />
-            )}
 
-            {showChangePartyInformationForm && formInputData && (
-                <PartyInputForm
+            {showChangeTransitionInformationForm && formInputData && (
+                <TransitionInputForm
                     group={formInputData}
-                    onSubmit={handleChangePartyInformation}
+                    onSubmit={handleChangeTransitionInformation}
                     onChange={handleFormInputChange}
                 />
             )}
@@ -173,4 +161,4 @@ const PartyComponent = () => {
     );
 };
 
-export default PartyComponent;
+export default TransitionComponent;
